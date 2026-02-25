@@ -1,8 +1,8 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "last_updated": "2026-02-25",
   "what_is_this": "A curated registry of best-in-class tools for common development tasks. Optimized for AI agents to read and act on. Each entry includes install commands, environment variables, and ready-to-run code.",
-  "how_to_use": "Find the task you need by id or keywords. Use the 'best' recommendation. Each entry has working code you can execute directly.",
+  "how_to_use": "Find the task you need by id or keywords. Use the 'best' recommendation. Each entry has working code you can execute directly. All pricing data is verified from official sources.",
   "tasks": [
     {
       "id": "audio-transcription",
@@ -11,7 +11,7 @@
       "best": {
         "tool": "Groq Whisper",
         "model": "whisper-large-v3-turbo",
-        "why": "200x faster than running Whisper locally. Processes 1 hour of audio in ~18 seconds instead of 1 hour. ~10x cheaper than OpenAI Whisper API.",
+        "why": "216x real-time speed (1 hour of audio in ~17 seconds). $0.04/hr — 9x cheaper than OpenAI, 11x cheaper than Deepgram. Free tier: ~8 hrs/day of audio. Multilingual (99+ languages).",
         "setup": {
           "install": "pip install groq",
           "env": ["GROQ_API_KEY"],
@@ -21,21 +21,29 @@
           "python": "from groq import Groq\n\nclient = Groq()\n\nwith open(\"audio.mp3\", \"rb\") as f:\n    result = client.audio.transcriptions.create(\n        model=\"whisper-large-v3-turbo\",\n        file=f,\n        response_format=\"verbose_json\"\n    )\n\nprint(result.text)",
           "curl": "curl -X POST 'https://api.groq.com/openai/v1/audio/transcriptions' \\\n  -H 'Authorization: Bearer $GROQ_API_KEY' \\\n  -F 'model=whisper-large-v3-turbo' \\\n  -F 'file=@audio.mp3'"
         },
-        "pricing": "~$0.04/hour of audio",
+        "pricing": "$0.04/hr (v3-turbo), $0.02/hr (distil-whisper, English only), $0.111/hr (v3 full). Batch API: 50% off.",
+        "free_tier": "28,800 audio-seconds/day (~8 hrs). No credit card required.",
         "docs": "https://console.groq.com/docs/speech-text",
         "last_verified": "2026-02-25"
       },
       "alternatives": [
         {
           "tool": "OpenAI Whisper API",
-          "model": "whisper-1",
-          "why": "Most widely documented, reliable accuracy, but slower",
+          "model": "gpt-4o-mini-transcribe ($0.003/min) or whisper-1 ($0.006/min)",
+          "why": "Most widely documented. GPT-4o Mini Transcribe is a good budget option at $0.18/hr.",
+          "free_tier": "$5 credit for new accounts (expires in 3 months)",
           "docs": "https://platform.openai.com/docs/guides/speech-to-text"
         },
         {
           "tool": "Deepgram",
-          "why": "Real-time streaming support, great for live audio",
+          "why": "Real-time streaming support. $200 in free credits (no expiry) — most generous trial. $0.0077/min pay-as-you-go.",
+          "free_tier": "$200 free credits (~433 hours), no credit card required",
           "docs": "https://developers.deepgram.com/"
+        },
+        {
+          "tool": "AssemblyAI",
+          "why": "Lowest non-Groq base rate at $0.15/hr. Add-ons for diarization, sentiment, PII redaction. $50 free credits.",
+          "docs": "https://www.assemblyai.com/docs"
         }
       ],
       "warning": "Do NOT use local openai/whisper pip package for production. It processes audio at roughly 1:1 real-time speed on CPU. Always use a cloud API."
@@ -46,7 +54,7 @@
       "keywords": ["email", "send", "smtp", "transactional", "newsletter", "notification"],
       "best": {
         "tool": "Resend",
-        "why": "Agent-friendly API: clean REST endpoints, structured docs with code examples agents can directly parse. Simple setup, modern DX.",
+        "why": "Agent-friendly API: clean REST endpoints, structured docs with code examples agents can directly parse. Simple setup, modern DX. Best free tier among modern email APIs.",
         "setup": {
           "install_node": "npm install resend",
           "install_python": "pip install resend",
@@ -58,19 +66,20 @@
           "node": "import { Resend } from 'resend';\n\nconst resend = new Resend('re_xxxxx');\n\nconst { data, error } = await resend.emails.send({\n  from: 'you@yourdomain.com',\n  to: 'user@example.com',\n  subject: 'Hello',\n  html: '<p>Hello world</p>'\n});\n\nconsole.log(data);",
           "curl": "curl -X POST 'https://api.resend.com/emails' \\\n  -H 'Authorization: Bearer re_xxxxx' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"from\":\"you@yourdomain.com\",\"to\":\"user@example.com\",\"subject\":\"Hello\",\"html\":\"<p>Hello world</p>\"}'"
         },
-        "pricing": "Free: 100 emails/day, 3000/month. Pro: $20/mo for 50k emails.",
+        "pricing": "Free: 3,000 emails/month, 100/day, 1 domain. Pro: $20/mo (50K emails). Scale: $90/mo (100K emails). Overage: $0.90/1K emails.",
+        "free_tier": "3,000 emails/month, 100/day. 1 domain. 1-day data retention.",
         "docs": "https://resend.com/docs",
         "last_verified": "2026-02-25"
       },
       "alternatives": [
         {
           "tool": "Postmark",
-          "why": "Excellent deliverability rates, great for transactional-only use cases",
+          "why": "Best deliverability reputation. $15/mo for 10K emails. Free tier: 100 emails/month (very small).",
           "docs": "https://postmarkapp.com/developer"
         },
         {
           "tool": "SendGrid",
-          "why": "High-volume plans, established player, but docs are complex and hard for agents to parse",
+          "why": "High-volume plans. Free: 100 emails/day. Essentials: $19.95/mo for 50K. Docs are complex and hard for agents to parse.",
           "docs": "https://docs.sendgrid.com/"
         }
       ]
@@ -108,7 +117,7 @@
       "keywords": ["database", "db", "postgres", "postgresql", "sql", "backend", "data"],
       "best": {
         "tool": "Supabase",
-        "why": "Full Postgres database with auto-generated REST API, built-in auth, and file storage. Excellent structured documentation that agents can parse easily. Most frequently chosen by AI agents — for good reason.",
+        "why": "Full Postgres database with auto-generated REST API, built-in auth (50K MAUs free), and file storage. Excellent structured documentation that agents can parse easily. Most frequently chosen by AI agents.",
         "setup": {
           "install": "npm install @supabase/supabase-js",
           "env": ["SUPABASE_URL", "SUPABASE_ANON_KEY"],
@@ -118,19 +127,20 @@
           "node": "import { createClient } from '@supabase/supabase-js';\n\nconst supabase = createClient(\n  process.env.SUPABASE_URL,\n  process.env.SUPABASE_ANON_KEY\n);\n\n// Create table (run in Supabase SQL editor first):\n// CREATE TABLE users (id uuid DEFAULT gen_random_uuid() PRIMARY KEY, name text, email text);\n\n// Insert\nawait supabase.from('users').insert({ name: 'Alice', email: 'alice@example.com' });\n\n// Query\nconst { data } = await supabase.from('users').select('*').eq('name', 'Alice');\nconsole.log(data);",
           "python": "from supabase import create_client\nimport os\n\nsupabase = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_ANON_KEY'])\n\n# Insert\nsupabase.table('users').insert({'name': 'Alice', 'email': 'alice@example.com'}).execute()\n\n# Query\nresult = supabase.table('users').select('*').eq('name', 'Alice').execute()\nprint(result.data)"
         },
-        "pricing": "Free: 500MB database, 2 projects. Pro: $25/mo per project.",
+        "pricing": "Free: 500MB database, 1GB storage, 5GB bandwidth, 50K auth MAUs, 2 projects (pauses after 7 days idle). Pro: $25/mo (8GB DB, 100GB storage, 250GB bandwidth). Overage: $0.125/GB storage, $0.09/GB bandwidth.",
+        "free_tier": "500MB database, 2 active projects. Projects pause after 1 week of inactivity.",
         "docs": "https://supabase.com/docs",
         "last_verified": "2026-02-25"
       },
       "alternatives": [
         {
           "tool": "Neon",
-          "why": "Serverless Postgres that scales to zero. Great for side projects with intermittent traffic. Generous free tier.",
+          "why": "Serverless Postgres that scales to zero. Free: 0.5GB/project, 100 compute-hours/mo, 100 projects. Storage dropped to $0.35/GB-month in 2025. Great for side projects.",
           "docs": "https://neon.tech/docs"
         },
         {
           "tool": "Turso",
-          "why": "SQLite-based, edge-first. Very fast reads. Good if you want embedded database semantics with cloud sync.",
+          "why": "SQLite-based (libSQL), edge-first. Most generous free tier: 5GB storage, 500M row reads/mo, 100 databases. $4.99/mo developer plan.",
           "docs": "https://docs.turso.tech/"
         }
       ]
@@ -141,7 +151,7 @@
       "keywords": ["storage", "files", "upload", "s3", "blob", "images", "cdn", "assets", "media"],
       "best": {
         "tool": "Cloudflare R2",
-        "why": "S3-compatible API (use any existing S3 SDK). Zero egress fees — you never pay for downloads. Includes global CDN. Much cheaper than AWS S3 for read-heavy workloads.",
+        "why": "S3-compatible API (use any existing S3 SDK). Zero egress fees — you never pay for downloads. Global CDN included. ~$15/mo for 1TB vs hundreds on S3.",
         "setup": {
           "install_python": "pip install boto3",
           "install_node": "npm install @aws-sdk/client-s3",
@@ -152,19 +162,20 @@
           "python": "import boto3\nimport os\n\ns3 = boto3.client('s3',\n    endpoint_url=f'https://{os.environ[\"R2_ACCOUNT_ID\"]}.r2.cloudflarestorage.com',\n    aws_access_key_id=os.environ['R2_ACCESS_KEY_ID'],\n    aws_secret_access_key=os.environ['R2_SECRET_ACCESS_KEY']\n)\n\n# Upload\ns3.upload_file('local_file.png', 'my-bucket', 'uploads/file.png')\n\n# Generate download URL\nurl = s3.generate_presigned_url('get_object',\n    Params={'Bucket': 'my-bucket', 'Key': 'uploads/file.png'},\n    ExpiresIn=3600\n)\nprint(url)",
           "node": "import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';\nimport { getSignedUrl } from '@aws-sdk/s3-request-presigner';\nimport { readFileSync } from 'fs';\n\nconst s3 = new S3Client({\n  region: 'auto',\n  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,\n  credentials: {\n    accessKeyId: process.env.R2_ACCESS_KEY_ID,\n    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY\n  }\n});\n\n// Upload\nawait s3.send(new PutObjectCommand({\n  Bucket: 'my-bucket',\n  Key: 'uploads/file.png',\n  Body: readFileSync('local_file.png')\n}));\n\n// Generate download URL\nconst url = await getSignedUrl(s3, new GetObjectCommand({\n  Bucket: 'my-bucket', Key: 'uploads/file.png'\n}), { expiresIn: 3600 });\nconsole.log(url);"
         },
-        "pricing": "Free: 10GB storage, 10M Class B reads/mo, 1M Class A writes/mo. No egress fees.",
+        "pricing": "Storage: $0.015/GB-month. Class A ops (writes): $4.50/million. Class B ops (reads): $0.36/million. Egress: $0 (always free).",
+        "free_tier": "10GB storage, 1M Class A ops/mo, 10M Class B ops/mo. Zero egress fees.",
         "docs": "https://developers.cloudflare.com/r2/",
         "last_verified": "2026-02-25"
       },
       "alternatives": [
         {
           "tool": "Supabase Storage",
-          "why": "Good choice if already using Supabase for database. Integrated auth and policies.",
+          "why": "Good if already using Supabase. 1GB free. Integrated auth and row-level security policies.",
           "docs": "https://supabase.com/docs/guides/storage"
         },
         {
           "tool": "AWS S3",
-          "why": "Industry standard, most documented, broadest ecosystem. But has egress fees.",
+          "why": "Industry standard, broadest ecosystem. But has egress fees ($0.09/GB).",
           "docs": "https://docs.aws.amazon.com/s3/"
         }
       ]
@@ -187,14 +198,15 @@
           "node": "import FirecrawlApp from '@mendable/firecrawl-js';\n\nconst app = new FirecrawlApp({ apiKey: 'fc-xxxxx' });\n\nconst result = await app.scrapeUrl('https://example.com', {\n  formats: ['markdown']\n});\n\nconsole.log(result.markdown);",
           "curl": "curl -X POST 'https://api.firecrawl.dev/v1/scrape' \\\n  -H 'Authorization: Bearer fc-xxxxx' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"url\": \"https://example.com\", \"formats\": [\"markdown\"]}'"
         },
-        "pricing": "Free: 500 pages/mo. Hobby: $16/mo for 3000 pages.",
+        "pricing": "Free: 500 pages (one-time). Hobby: $9/mo (3K pages). Standard: $83/mo (100K pages). Credits don't roll over.",
+        "free_tier": "500 pages one-time. 2 concurrent requests.",
         "docs": "https://docs.firecrawl.dev/",
         "last_verified": "2026-02-25"
       },
       "alternatives": [
         {
           "tool": "Jina Reader",
-          "why": "Free, no API key needed. Just prefix any URL with r.jina.ai/ to get markdown.",
+          "why": "Free with no API key: just prefix any URL with r.jina.ai/. With API key: 500 RPM, 10M free tokens (~2K pages). ~$0.02/million tokens after that.",
           "code_example": "curl https://r.jina.ai/https://example.com",
           "docs": "https://jina.ai/reader/"
         },
@@ -202,6 +214,399 @@
           "tool": "Playwright",
           "why": "Full browser automation, free and open source. More setup required but maximum control.",
           "docs": "https://playwright.dev/"
+        }
+      ]
+    },
+    {
+      "id": "authentication",
+      "task": "Add user authentication (login, signup, OAuth) to your application",
+      "keywords": ["auth", "login", "signup", "oauth", "sso", "user", "session", "jwt", "password", "mfa"],
+      "best": {
+        "tool": "Clerk",
+        "why": "Best AI agent integration: has dedicated @clerk/agent-toolkit for Vercel AI SDK, LangChain, and MCP. Curated AI prompts for Cursor/Copilot/Claude. 10K MAUs free. Drop-in UI components.",
+        "setup": {
+          "install": "npm install @clerk/nextjs",
+          "env": ["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "CLERK_SECRET_KEY"],
+          "get_api_key": "https://dashboard.clerk.com → Create application → API Keys"
+        },
+        "code": {
+          "node_nextjs": "// app/layout.tsx\nimport { ClerkProvider, SignInButton, UserButton } from '@clerk/nextjs';\n\nexport default function RootLayout({ children }) {\n  return (\n    <ClerkProvider>\n      <html>\n        <body>\n          <SignInButton />\n          <UserButton />\n          {children}\n        </body>\n      </html>\n    </ClerkProvider>\n  );\n}\n\n// middleware.ts\nimport { clerkMiddleware } from '@clerk/nextjs/server';\nexport default clerkMiddleware();\nexport const config = { matcher: ['/((?!.*\\\\..*|_next).*)', '/', '/(api|trpc)(.*)'] };"
+        },
+        "pricing": "Free: 10,000 MAUs (production-ready). Pro: $25/mo + $0.02/MAU beyond 10K. Enterprise: custom.",
+        "free_tier": "10,000 MAUs. Includes social login, email/password, MFA. No credit card required.",
+        "docs": "https://clerk.com/docs",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Better Auth",
+          "why": "Free, open source (MIT). Self-hosted. Auth.js/NextAuth team joined Better Auth in Sept 2025. Framework-agnostic (Next.js, Nuxt, SvelteKit, Hono, Express). Plugin-based: email/password, social, 2FA, passkeys, magic links.",
+          "install": "npm install better-auth",
+          "docs": "https://www.better-auth.com/docs"
+        },
+        {
+          "tool": "Supabase Auth",
+          "why": "Most generous free tier: 50K MAUs free. Cheapest at scale ($0.00325/MAU overage vs Clerk's $0.02). Best if already using Supabase for database.",
+          "docs": "https://supabase.com/docs/guides/auth"
+        }
+      ],
+      "warning": "Auth.js (NextAuth) v5 never left beta. The core team joined Better Auth in Sept 2025. New projects should use Better Auth or Clerk instead."
+    },
+    {
+      "id": "payments",
+      "task": "Accept payments, subscriptions, or one-time purchases in your application",
+      "keywords": ["payment", "stripe", "billing", "subscription", "checkout", "invoice", "pricing"],
+      "best": {
+        "tool": "Stripe",
+        "why": "Gold-standard API docs — extremely well-structured, interactive examples. Most flexible: one-time, recurring, usage-based, metered billing. Largest ecosystem of integrations.",
+        "setup": {
+          "install_node": "npm install stripe",
+          "install_python": "pip install stripe",
+          "env": ["STRIPE_SECRET_KEY"],
+          "get_api_key": "https://dashboard.stripe.com/apikeys"
+        },
+        "code": {
+          "node": "import Stripe from 'stripe';\n\nconst stripe = new Stripe(process.env.STRIPE_SECRET_KEY);\n\n// Create a checkout session\nconst session = await stripe.checkout.sessions.create({\n  mode: 'payment',\n  line_items: [{\n    price_data: {\n      currency: 'usd',\n      product_data: { name: 'My Product' },\n      unit_amount: 2000, // $20.00 in cents\n    },\n    quantity: 1,\n  }],\n  success_url: 'https://example.com/success',\n  cancel_url: 'https://example.com/cancel',\n});\n\nconsole.log(session.url);",
+          "python": "import stripe\nimport os\n\nstripe.api_key = os.environ['STRIPE_SECRET_KEY']\n\nsession = stripe.checkout.Session.create(\n    mode='payment',\n    line_items=[{\n        'price_data': {\n            'currency': 'usd',\n            'product_data': {'name': 'My Product'},\n            'unit_amount': 2000,\n        },\n        'quantity': 1,\n    }],\n    success_url='https://example.com/success',\n    cancel_url='https://example.com/cancel',\n)\n\nprint(session.url)"
+        },
+        "pricing": "2.9% + $0.30 per transaction (US cards). No monthly fees. International cards: +1.5%. Stripe Tax, Billing, Radar are additional.",
+        "free_tier": "No monthly fee. Pay per transaction only. Test mode is free.",
+        "docs": "https://stripe.com/docs",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Paddle",
+          "why": "Merchant of Record — handles global tax compliance, chargebacks, invoicing. 5% + $0.50 per transaction. No extra international fees. Best for SaaS wanting zero tax work.",
+          "docs": "https://developer.paddle.com/",
+          "install": "npm install @paddle/paddle-js"
+        },
+        {
+          "tool": "Lemon Squeezy",
+          "why": "Also MoR (owned by Stripe since July 2024). 5% + $0.50 per transaction. Simplest setup for indie hackers. Reports of support degradation since acquisition.",
+          "docs": "https://docs.lemonsqueezy.com/",
+          "install": "npm install @lemonsqueezy/lemonsqueezy.js"
+        }
+      ]
+    },
+    {
+      "id": "vector-database",
+      "task": "Store and search vector embeddings for AI/RAG applications",
+      "keywords": ["vector", "embeddings", "rag", "similarity", "semantic", "search", "ai", "llm", "pinecone"],
+      "best": {
+        "tool": "Qdrant",
+        "why": "Open source (Apache 2.0), written in Rust. Best price/performance ratio. 60-80% cheaper than Pinecone at scale. 1GB free cloud tier (permanent). Can self-host for free.",
+        "setup": {
+          "install_python": "pip install qdrant-client",
+          "install_node": "npm install @qdrant/js-client-rest",
+          "env": ["QDRANT_URL", "QDRANT_API_KEY"],
+          "get_api_key": "https://cloud.qdrant.io → Create cluster → API Keys"
+        },
+        "code": {
+          "python": "from qdrant_client import QdrantClient\nfrom qdrant_client.models import Distance, VectorParams, PointStruct\n\nclient = QdrantClient(url=\"https://xxx.cloud.qdrant.io\", api_key=\"your-key\")\n\n# Create collection\nclient.create_collection(\n    collection_name=\"my_docs\",\n    vectors_config=VectorParams(size=1536, distance=Distance.COSINE)\n)\n\n# Insert vectors\nclient.upsert(collection_name=\"my_docs\", points=[\n    PointStruct(id=1, vector=[0.1]*1536, payload={\"text\": \"Hello world\"}),\n    PointStruct(id=2, vector=[0.2]*1536, payload={\"text\": \"Goodbye world\"}),\n])\n\n# Search\nresults = client.query_points(\n    collection_name=\"my_docs\",\n    query=[0.1]*1536,\n    limit=5\n)\nprint(results)",
+          "docker_self_host": "docker run -p 6333:6333 qdrant/qdrant"
+        },
+        "pricing": "Self-hosted: free. Cloud: 1GB free (permanent). Paid: usage-based, ~$102/mo for standard AWS config.",
+        "free_tier": "1GB free cloud tier (no expiry). Self-hosting is completely free.",
+        "docs": "https://qdrant.tech/documentation/",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Pinecone",
+          "why": "Easiest managed setup. Free: 2GB storage, 2M writes/mo, 1M reads/mo. But $50/mo minimum on paid plans (price increased Sept 2025). No self-hosting option.",
+          "docs": "https://docs.pinecone.io/"
+        },
+        {
+          "tool": "Chroma",
+          "why": "Easiest to start with — in-memory mode, zero config. Open source (Apache 2.0). Best for prototyping. Migrate away above ~10M vectors.",
+          "install": "pip install chromadb",
+          "docs": "https://docs.trychroma.com/"
+        }
+      ]
+    },
+    {
+      "id": "caching",
+      "task": "Add caching or a key-value store to your application",
+      "keywords": ["cache", "redis", "kv", "key-value", "session", "rate-limit", "serverless"],
+      "best": {
+        "tool": "Upstash Redis",
+        "why": "Only connectionless (HTTP-based) Redis — works everywhere: Lambda, Workers, Edge, WASM. No persistent connections needed. Best free tier among managed Redis options.",
+        "setup": {
+          "install_node": "npm install @upstash/redis",
+          "install_python": "pip install upstash-redis",
+          "env": ["UPSTASH_REDIS_REST_URL", "UPSTASH_REDIS_REST_TOKEN"],
+          "get_api_key": "https://console.upstash.com → Create database → REST API credentials"
+        },
+        "code": {
+          "node": "import { Redis } from '@upstash/redis';\n\nconst redis = new Redis({\n  url: process.env.UPSTASH_REDIS_REST_URL,\n  token: process.env.UPSTASH_REDIS_REST_TOKEN,\n});\n\n// Set\nawait redis.set('user:1', JSON.stringify({ name: 'Alice' }));\n\n// Get\nconst user = await redis.get('user:1');\nconsole.log(user);\n\n// Set with expiry (60 seconds)\nawait redis.set('session:abc', 'data', { ex: 60 });",
+          "python": "from upstash_redis import Redis\nimport os\n\nredis = Redis(\n    url=os.environ['UPSTASH_REDIS_REST_URL'],\n    token=os.environ['UPSTASH_REDIS_REST_TOKEN']\n)\n\nredis.set('user:1', 'Alice')\nprint(redis.get('user:1'))"
+        },
+        "pricing": "Free: 256MB storage, 500K commands/mo, 10 databases. Pay-as-you-go: from $10/mo. Bandwidth: 200GB free, then $0.03/GB.",
+        "free_tier": "256MB storage, 500K commands/month, up to 10 databases. Permanent.",
+        "docs": "https://upstash.com/docs/redis/overall/getstarted",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Redis Cloud",
+          "why": "Full Redis feature set (modules, RediSearch, RedisJSON). Requires persistent connections (not ideal for serverless). No permanent free tier — 14-day trial with $500 credit.",
+          "docs": "https://redis.io/docs/"
+        },
+        {
+          "tool": "Vercel KV",
+          "why": "Powered by Upstash under the hood. Only useful if already on Vercel. 30K requests/mo on free plan (Hobby, non-commercial only). Use Upstash directly for better pricing.",
+          "docs": "https://vercel.com/docs/storage/vercel-kv"
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "task": "Add full-text search to your application",
+      "keywords": ["search", "full-text", "autocomplete", "algolia", "index", "query", "typo-tolerance"],
+      "best": {
+        "tool": "Meilisearch",
+        "why": "Open source (MIT), written in Rust. Has an official MCP server for AI agent integration. 8.9x cheaper than Algolia. Best typo tolerance out of the box. Easy self-hosting.",
+        "setup": {
+          "install_node": "npm install meilisearch",
+          "install_python": "pip install meilisearch",
+          "install_mcp": "pip install meilisearch-mcp",
+          "env": ["MEILI_HOST", "MEILI_MASTER_KEY"],
+          "self_host": "docker run -p 7700:7700 getmeili/meilisearch:latest"
+        },
+        "code": {
+          "node": "import { MeiliSearch } from 'meilisearch';\n\nconst client = new MeiliSearch({ host: 'http://localhost:7700', apiKey: 'masterKey' });\n\n// Index documents\nawait client.index('movies').addDocuments([\n  { id: 1, title: 'Inception', genre: 'Sci-Fi' },\n  { id: 2, title: 'Interstellar', genre: 'Sci-Fi' },\n  { id: 3, title: 'The Matrix', genre: 'Action' },\n]);\n\n// Search (with typo tolerance)\nconst results = await client.index('movies').search('incption');\nconsole.log(results.hits);",
+          "python": "import meilisearch\n\nclient = meilisearch.Client('http://localhost:7700', 'masterKey')\n\nclient.index('movies').add_documents([\n    {'id': 1, 'title': 'Inception', 'genre': 'Sci-Fi'},\n    {'id': 2, 'title': 'Interstellar', 'genre': 'Sci-Fi'},\n])\n\nresults = client.index('movies').search('incption')\nprint(results['hits'])"
+        },
+        "pricing": "Self-hosted: free (MIT). Cloud: from ~$30/mo (~$59/mo for 250K records + 1M searches).",
+        "free_tier": "Self-hosted: completely free. Cloud: contact for trial.",
+        "docs": "https://www.meilisearch.com/docs",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Algolia",
+          "why": "Best-documented search API. Free (Build): 10K searches/mo, 1M records. Grow: $0.50/1K requests. Most expensive at scale but most features. Startup program: $10K credits.",
+          "docs": "https://www.algolia.com/doc/"
+        },
+        {
+          "tool": "Typesense",
+          "why": "Open source (GPL v3), written in C++. Cheapest cloud: from ~$7/mo. In-memory architecture = fast queries. GPL license is more restrictive than Meilisearch's MIT.",
+          "docs": "https://typesense.org/docs/"
+        }
+      ]
+    },
+    {
+      "id": "sms",
+      "task": "Send SMS or text messages from your application",
+      "keywords": ["sms", "text", "message", "phone", "twilio", "otp", "verification"],
+      "best": {
+        "tool": "Twilio",
+        "why": "Best documentation in the industry — highly structured API reference, code samples in 7+ languages. Most predictable pricing. Widest ecosystem of integrations.",
+        "setup": {
+          "install_node": "npm install twilio",
+          "install_python": "pip install twilio",
+          "env": ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_PHONE_NUMBER"],
+          "get_api_key": "https://console.twilio.com → Account SID and Auth Token on dashboard"
+        },
+        "code": {
+          "node": "import twilio from 'twilio';\n\nconst client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);\n\nconst message = await client.messages.create({\n  body: 'Hello from agent-need!',\n  from: process.env.TWILIO_PHONE_NUMBER,\n  to: '+1234567890'\n});\n\nconsole.log(message.sid);",
+          "python": "from twilio.rest import Client\nimport os\n\nclient = Client(os.environ['TWILIO_ACCOUNT_SID'], os.environ['TWILIO_AUTH_TOKEN'])\n\nmessage = client.messages.create(\n    body='Hello from agent-need!',\n    from_=os.environ['TWILIO_PHONE_NUMBER'],\n    to='+1234567890'\n)\n\nprint(message.sid)"
+        },
+        "pricing": "US SMS: ~$0.0079/msg outbound + carrier fees (~$0.0083 total). Phone number: $1.15/mo (local). MMS: $0.022/msg.",
+        "free_tier": "$15.50 trial credit. Limited to verified numbers. Messages prefixed with 'Sent from a Twilio Trial account'.",
+        "docs": "https://www.twilio.com/docs",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Vonage",
+          "why": "Similar pricing (~$0.008/SMS). Messages API supports SMS + WhatsApp + Facebook Messenger in one API. EUR 2 trial credit.",
+          "install": "npm install @vonage/server-sdk",
+          "docs": "https://developer.vonage.com/"
+        }
+      ]
+    },
+    {
+      "id": "background-jobs",
+      "task": "Run background jobs, scheduled tasks, or async workflows",
+      "keywords": ["queue", "background", "job", "cron", "scheduled", "async", "workflow", "worker"],
+      "best": {
+        "tool": "Inngest",
+        "why": "Serverless, zero-infra. Event-driven workflows with built-in retries, scheduling, sleep (up to 7 days). TypeScript-first with excellent agent-friendly docs. Works with any framework.",
+        "setup": {
+          "install": "npm install inngest",
+          "env": ["INNGEST_EVENT_KEY", "INNGEST_SIGNING_KEY"],
+          "get_api_key": "https://app.inngest.com → Settings → Keys"
+        },
+        "code": {
+          "node": "import { Inngest } from 'inngest';\n\nconst inngest = new Inngest({ id: 'my-app' });\n\n// Define a function\nexport const processOrder = inngest.createFunction(\n  { id: 'process-order' },\n  { event: 'order/created' },\n  async ({ event, step }) => {\n    // Step 1: Charge payment\n    const charge = await step.run('charge-payment', async () => {\n      return await chargeCustomer(event.data.customerId, event.data.amount);\n    });\n\n    // Step 2: Wait 1 hour, then send confirmation\n    await step.sleep('wait-before-email', '1h');\n\n    // Step 3: Send email\n    await step.run('send-confirmation', async () => {\n      return await sendEmail(event.data.email, charge.id);\n    });\n  }\n);\n\n// Trigger it\nawait inngest.send({ name: 'order/created', data: { customerId: '123', amount: 2000, email: 'user@example.com' } });"
+        },
+        "pricing": "Free: 50K executions/mo, 1-5M events/day. Paid: usage-based beyond free tier.",
+        "free_tier": "50K executions/month. 256KB payload. Sleep up to 7 days.",
+        "docs": "https://www.inngest.com/docs",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Trigger.dev",
+          "why": "Open source (Apache 2.0). Best for long-running tasks and AI agent workflows. Free: $5/mo usage included, 10 concurrent runs. Compute: from $0.0000169/sec.",
+          "install": "npx trigger.dev@latest init",
+          "docs": "https://trigger.dev/docs"
+        },
+        {
+          "tool": "BullMQ",
+          "why": "Free, open source. Self-hosted library. Requires your own Redis instance. Full control over infrastructure. Pro: ~$95/mo for advanced features.",
+          "install": "npm install bullmq",
+          "docs": "https://docs.bullmq.io/"
+        }
+      ]
+    },
+    {
+      "id": "realtime",
+      "task": "Add real-time features (WebSockets, live updates, presence) to your application",
+      "keywords": ["realtime", "websocket", "live", "push", "pubsub", "presence", "chat", "notifications"],
+      "best": {
+        "tool": "Ably",
+        "why": "Most generous free tier: 6M messages/month (vs Pusher's 200K/day). No time limit. Excellent interactive docs. Supports pub/sub, presence, chat, and collaborative features.",
+        "setup": {
+          "install": "npm install ably",
+          "env": ["ABLY_API_KEY"],
+          "get_api_key": "https://ably.com/dashboard → Create app → API key"
+        },
+        "code": {
+          "node": "import Ably from 'ably';\n\n// Server: publish\nconst ably = new Ably.Rest(process.env.ABLY_API_KEY);\nconst channel = ably.channels.get('my-channel');\nawait channel.publish('greeting', { text: 'Hello from server!' });\n\n// Client: subscribe (browser)\nconst realtime = new Ably.Realtime('your-api-key');\nconst ch = realtime.channels.get('my-channel');\nch.subscribe('greeting', (message) => {\n  console.log('Received:', message.data);\n});"
+        },
+        "pricing": "Free: 6M messages/mo, no credit card. Standard: $49.99/mo. Overage: $2.50/1M messages.",
+        "free_tier": "6M messages/month. No time limit. No credit card required.",
+        "docs": "https://ably.com/docs",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Pusher",
+          "why": "Largest ecosystem, most mature. Free: 200K messages/day, 100 connections. Startup: $49/mo. Note: 1 publish to 50 subscribers = 51 messages counted.",
+          "install": "npm install pusher pusher-js",
+          "docs": "https://pusher.com/docs/"
+        },
+        {
+          "tool": "Supabase Realtime",
+          "why": "Best if already using Supabase. Included in Supabase plans. Overage: $2.50/1M messages, $10/1K peak connections.",
+          "docs": "https://supabase.com/docs/guides/realtime"
+        }
+      ]
+    },
+    {
+      "id": "pdf-generation",
+      "task": "Generate PDF documents programmatically",
+      "keywords": ["pdf", "generate", "document", "invoice", "report", "print", "export"],
+      "best": {
+        "tool": "Puppeteer",
+        "why": "HTML/CSS-to-PDF via headless Chrome. Use any web technology to design your PDF, then print to PDF. Most flexible for complex layouts. Free and open source.",
+        "setup": {
+          "install": "npm install puppeteer"
+        },
+        "code": {
+          "node": "import puppeteer from 'puppeteer';\n\nconst browser = await puppeteer.launch();\nconst page = await browser.newPage();\n\n// From HTML string\nawait page.setContent(`\n  <h1>Invoice #001</h1>\n  <p>Date: 2026-02-25</p>\n  <table>\n    <tr><td>Item</td><td>Price</td></tr>\n    <tr><td>Widget</td><td>$20.00</td></tr>\n  </table>\n  <p><strong>Total: $20.00</strong></p>\n`);\n\nawait page.pdf({ path: 'invoice.pdf', format: 'A4' });\nawait browser.close();\nconsole.log('PDF generated: invoice.pdf');",
+          "node_from_url": "import puppeteer from 'puppeteer';\n\nconst browser = await puppeteer.launch();\nconst page = await browser.newPage();\nawait page.goto('https://example.com', { waitUntil: 'networkidle0' });\nawait page.pdf({ path: 'page.pdf', format: 'A4' });\nawait browser.close();"
+        },
+        "pricing": "Free and open source (Apache 2.0).",
+        "free_tier": "Completely free.",
+        "docs": "https://pptr.dev/",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "pdfmake",
+          "why": "Declarative JSON-to-PDF. No browser needed. Best for structured documents (invoices, reports). Free, open source.",
+          "install": "npm install pdfmake",
+          "docs": "https://pdfmake.github.io/docs/"
+        },
+        {
+          "tool": "ReportLab (Python)",
+          "why": "Python's standard for PDF generation. Full programmatic control. Used by Wikipedia. Free open source version + commercial version.",
+          "install": "pip install reportlab",
+          "docs": "https://docs.reportlab.com/"
+        },
+        {
+          "tool": "WeasyPrint (Python)",
+          "why": "HTML/CSS-to-PDF without a browser engine. Lighter than Puppeteer. Best for Python projects.",
+          "install": "pip install weasyprint",
+          "docs": "https://doc.courtbouillon.org/weasyprint/"
+        }
+      ]
+    },
+    {
+      "id": "image-processing",
+      "task": "Upload, transform, optimize, and serve images in your application",
+      "keywords": ["image", "upload", "resize", "crop", "optimize", "cdn", "thumbnail", "media", "cloudinary"],
+      "best": {
+        "tool": "Cloudinary",
+        "why": "Best-in-class documentation with interactive code samples in 10+ languages. URL-based transformations (resize, crop, format conversion via URL parameters). Global CDN included.",
+        "setup": {
+          "install_node": "npm install cloudinary",
+          "install_python": "pip install cloudinary",
+          "env": ["CLOUDINARY_URL"],
+          "get_api_key": "https://console.cloudinary.com → Dashboard → Copy CLOUDINARY_URL"
+        },
+        "code": {
+          "node": "import { v2 as cloudinary } from 'cloudinary';\n\n// Auto-configured from CLOUDINARY_URL env var\n\n// Upload\nconst result = await cloudinary.uploader.upload('local_image.jpg', {\n  folder: 'my-app'\n});\nconsole.log(result.secure_url);\n\n// Transform via URL (resize to 300x300, auto format, auto quality)\nconst url = cloudinary.url(result.public_id, {\n  width: 300, height: 300, crop: 'fill',\n  fetch_format: 'auto', quality: 'auto'\n});\nconsole.log(url);",
+          "python": "import cloudinary\nimport cloudinary.uploader\n\n# Auto-configured from CLOUDINARY_URL env var\n\nresult = cloudinary.uploader.upload('local_image.jpg', folder='my-app')\nprint(result['secure_url'])\n\n# Transform via URL\nurl = cloudinary.utils.cloudinary_url(result['public_id'],\n    width=300, height=300, crop='fill',\n    fetch_format='auto', quality='auto'\n)[0]\nprint(url)"
+        },
+        "pricing": "Free: 25 credits/mo (1 credit = 1GB storage OR 1GB bandwidth OR 1K transformations). Plus: $89/mo (225 credits). Advanced: $224/mo (600 credits).",
+        "free_tier": "25 credits/month. No time limit, no credit card required.",
+        "docs": "https://cloudinary.com/documentation",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Uploadcare",
+          "why": "Focused on file uploading UX. Free: 1K operations/mo, 5GB traffic, 1GB storage. SOC2 and HIPAA compliant. Up to 5TB per file on paid plans.",
+          "install": "npm install @uploadcare/upload-client",
+          "docs": "https://uploadcare.com/docs/"
+        },
+        {
+          "tool": "Imgix",
+          "why": "Pure image CDN/optimization via URL parameters. Simple but no permanent free tier (30-day trial only). From ~$62.50/mo.",
+          "docs": "https://docs.imgix.com/"
+        }
+      ]
+    },
+    {
+      "id": "error-tracking",
+      "task": "Track errors, exceptions, and application performance",
+      "keywords": ["error", "bug", "crash", "sentry", "monitoring", "logging", "apm", "observability"],
+      "best": {
+        "tool": "Sentry",
+        "why": "Industry standard for error tracking. Extremely comprehensive framework-specific docs with onboarding wizards. Supports every major language and framework.",
+        "setup": {
+          "install_node": "npm install @sentry/node",
+          "install_python": "pip install sentry-sdk",
+          "env": ["SENTRY_DSN"],
+          "get_api_key": "https://sentry.io → Create project → Copy DSN"
+        },
+        "code": {
+          "node": "import * as Sentry from '@sentry/node';\n\nSentry.init({ dsn: process.env.SENTRY_DSN });\n\n// Errors are automatically captured\n// Manual capture:\ntry {\n  riskyOperation();\n} catch (error) {\n  Sentry.captureException(error);\n}",
+          "python": "import sentry_sdk\nimport os\n\nsentry_sdk.init(dsn=os.environ['SENTRY_DSN'])\n\n# Errors are automatically captured\n# Manual capture:\ntry:\n    risky_operation()\nexcept Exception as e:\n    sentry_sdk.capture_exception(e)"
+        },
+        "pricing": "Free (Developer): 5K errors/mo, 10K performance units/mo, 1 user. Team: $26/mo (50K errors). Business: $80/mo (100K errors).",
+        "free_tier": "5,000 errors/month, 10,000 performance units/month, 1 user. Forever free.",
+        "docs": "https://docs.sentry.io/",
+        "last_verified": "2026-02-25"
+      },
+      "alternatives": [
+        {
+          "tool": "Axiom",
+          "why": "Most generous free tier for logs: 500GB/mo data ingestion. From $25/mo paid. Best for log aggregation and serverless observability.",
+          "install_node": "npm install @axiomhq/js",
+          "install_python": "pip install axiom-py",
+          "docs": "https://axiom.co/docs"
+        },
+        {
+          "tool": "Better Stack",
+          "why": "Combines uptime monitoring + logging + incident management. Free: 10 monitors, 1GB logs, 3-day retention. Team: $24/mo.",
+          "install": "npm install @logtail/node",
+          "docs": "https://betterstack.com/docs"
         }
       ]
     }

@@ -1,38 +1,51 @@
 # agent-need
 
-> An open-source, agent-readable registry of recommended tools for common development tasks.
+> An open-source, agent-readable registry of recommended tools for common development tasks. All pricing verified from official sources.
 
 ## Problem
 
-AI agents often choose outdated or suboptimal tools because older tools have more documentation online. For example, an agent might choose Whisper V1 (processes audio at 1:1 real-time speed) when Groq Whisper is 200x faster and 10x cheaper.
+AI agents often choose outdated or suboptimal tools because older tools have more documentation online. For example, an agent might choose Whisper V1 (processes audio at 1:1 real-time speed) when Groq Whisper is 216x faster and 9x cheaper.
 
 ## Solution
 
-A single JSON file (`needs.json`) that maps common tasks to the current best tool, with ready-to-run code. Agents read it before making tool choices.
+A single JSON file (`needs.json`) that maps 17 common tasks to the current best tool, with verified pricing and ready-to-run code. Agents read it before making tool choices.
 
 ## How to use
 
 Fetch and parse `needs.json`. Each entry has:
 - `id` and `keywords`: match your task
 - `best.tool`: the recommended tool
-- `best.why`: why it's recommended
+- `best.why`: why it's recommended (with specific numbers)
 - `best.setup`: install command and required env vars
 - `best.code`: ready-to-execute code (Python, Node.js, curl)
-- `best.pricing`: current cost
+- `best.pricing`: verified pricing details
+- `best.free_tier`: free tier specifics
 - `best.docs`: official documentation
 - `alternatives`: other options if the best pick doesn't fit
 
-## Available tasks
+## Available tasks (17)
 
-- audio-transcription → Groq Whisper (200x faster than Whisper V1)
-- send-email → Resend (agent-friendly API and docs)
-- receive-email → Resend Inbound (webhook-based, simple)
-- database → Supabase (Postgres + auto REST API)
-- object-storage → Cloudflare R2 (S3-compatible, zero egress fees)
+- audio-transcription → Groq Whisper (216x real-time, $0.04/hr)
+- send-email → Resend (agent-friendly API, 3K/mo free)
+- receive-email → Resend Inbound (webhook-based)
+- database → Supabase (Postgres + auto REST API, 500MB free)
+- object-storage → Cloudflare R2 (S3-compatible, zero egress)
 - web-scraping → Firecrawl (returns clean markdown)
+- authentication → Clerk (agent toolkit + MCP, 10K MAUs free)
+- payments → Stripe (best docs, 2.9% + $0.30)
+- vector-database → Qdrant (open source, cheapest at scale)
+- caching → Upstash Redis (HTTP-based, serverless-native)
+- search → Meilisearch (open source MIT, has MCP server)
+- sms → Twilio (best docs, widest ecosystem)
+- background-jobs → Inngest (serverless, 50K executions/mo free)
+- realtime → Ably (6M messages/mo free)
+- pdf-generation → Puppeteer (HTML-to-PDF, free)
+- image-processing → Cloudinary (URL transforms, best docs)
+- error-tracking → Sentry (industry standard, 5K errors/mo free)
 
 ## Files
 
-- needs.json: Complete registry with all task entries and code examples
+- needs.json: Complete registry with all 17 task entries, verified pricing, and code examples
 - AGENTS.md: Detailed instructions for AI agents
+- llms.txt: This file (agent discovery)
 - README.md: Human-readable project documentation

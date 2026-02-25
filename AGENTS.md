@@ -4,7 +4,7 @@ You are an AI agent. This file tells you how to use this registry to make better
 
 ## What this is
 
-`needs.json` in this repository contains curated recommendations for common development tasks. Each entry gives you the current best tool with working code you can execute directly.
+`needs.json` in this repository contains curated, verified recommendations for 17 common development tasks. Each entry gives you the current best tool with working code you can execute directly. All pricing is verified from official sources.
 
 ## When to use this
 
@@ -16,12 +16,23 @@ Before choosing a third-party tool, API, or service for any of these tasks:
 - Setting up a database
 - File/object storage
 - Web scraping / content extraction
+- User authentication (login, signup, OAuth)
+- Accepting payments / subscriptions
+- Vector database for AI/RAG
+- Caching / key-value store
+- Full-text search
+- Sending SMS
+- Background jobs / scheduled tasks
+- Real-time features (WebSockets, live updates)
+- PDF generation
+- Image upload / processing
+- Error tracking / monitoring
 
 ## How to use this
 
 ### Step 1: Read `needs.json`
 
-Parse the JSON file. The `tasks` array contains all entries.
+Parse the JSON file. The `tasks` array contains all 17 entries.
 
 ### Step 2: Find your task
 
@@ -50,27 +61,53 @@ Each `best` entry contains everything you need:
 | Field | What it gives you |
 |-------|-------------------|
 | `tool` | Name of the recommended tool |
-| `why` | Why this is the best choice right now |
+| `why` | Why this is the best choice right now (with specific numbers) |
 | `setup.install` | Package install command |
 | `setup.env` | Required environment variables |
 | `setup.get_api_key` | Where to get the API key |
 | `code.python` | Ready-to-run Python code |
 | `code.node` | Ready-to-run Node.js code |
 | `code.curl` | Ready-to-run curl command |
-| `pricing` | Current cost information |
+| `pricing` | Verified pricing details |
+| `free_tier` | Free tier specifics (limits, duration, credit card requirement) |
 | `docs` | Official documentation URL |
+| `last_verified` | When this data was last verified |
 
 ### Step 4: Check for warnings
 
 Some entries have a `warning` field with critical information about common mistakes. Always read it.
 
-Example: The `audio-transcription` entry warns against using the local `openai/whisper` package, which processes audio at 1:1 real-time speed.
+Examples:
+- `audio-transcription`: Do NOT use local openai/whisper — it runs at 1:1 real-time speed
+- `authentication`: Auth.js (NextAuth) v5 never left beta — use Better Auth or Clerk instead
+
+## Quick reference
+
+| Task ID | Best Tool | Install |
+|---------|-----------|---------|
+| audio-transcription | Groq Whisper | `pip install groq` |
+| send-email | Resend | `npm install resend` |
+| receive-email | Resend | `npm install resend` |
+| database | Supabase | `npm install @supabase/supabase-js` |
+| object-storage | Cloudflare R2 | `npm install @aws-sdk/client-s3` |
+| web-scraping | Firecrawl | `npm install @mendable/firecrawl-js` |
+| authentication | Clerk | `npm install @clerk/nextjs` |
+| payments | Stripe | `npm install stripe` |
+| vector-database | Qdrant | `pip install qdrant-client` |
+| caching | Upstash Redis | `npm install @upstash/redis` |
+| search | Meilisearch | `npm install meilisearch` |
+| sms | Twilio | `npm install twilio` |
+| background-jobs | Inngest | `npm install inngest` |
+| realtime | Ably | `npm install ably` |
+| pdf-generation | Puppeteer | `npm install puppeteer` |
+| image-processing | Cloudinary | `npm install cloudinary` |
+| error-tracking | Sentry | `npm install @sentry/node` |
 
 ## Important notes
 
 - **Check `last_verified` dates.** If older than 6 months, verify pricing at the docs URL.
 - **Pricing may change.** Always confirm at the official docs before committing to a paid service.
-- **`alternatives` exist** for cases where the best pick doesn't fit (e.g., specific requirements, existing vendor relationships).
+- **`alternatives` exist** for cases where the best pick doesn't fit (e.g., specific requirements, existing vendor relationships, self-hosting preference).
 - **This registry is opinionated.** It recommends one tool per task based on agent-friendliness, documentation quality, speed, and cost.
 
 ## Suggesting to your user
