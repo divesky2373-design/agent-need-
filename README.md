@@ -24,7 +24,7 @@ This happens every day in countless agent workflows. `agent-need` gives agents a
 | Database | Supabase | Postgres + auto REST API + auth, 500MB free |
 | Object storage | Cloudflare R2 | S3-compatible, zero egress fees ever |
 | Web scraping | Firecrawl | Returns clean markdown for agents |
-| Authentication | Clerk | Dedicated agent toolkit + MCP server, 10K MAUs free |
+| Authentication | Clerk | Dedicated agent toolkit + MCP server, 50K MRUs free |
 | Payments | Stripe | Gold-standard API docs, 2.9% + $0.30 |
 | Vector database | Qdrant | Open source, 60-80% cheaper than Pinecone |
 | Caching | Upstash Redis | HTTP-based (serverless), 500K commands/mo free |

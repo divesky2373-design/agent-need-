@@ -31,7 +31,7 @@ Fetch and parse `needs.json`. Each entry has:
 - database → Supabase (Postgres + auto REST API, 500MB free)
 - object-storage → Cloudflare R2 (S3-compatible, zero egress)
 - web-scraping → Firecrawl (returns clean markdown)
-- authentication → Clerk (agent toolkit + MCP, 10K MAUs free)
+- authentication → Clerk (agent toolkit + MCP, 50K MRUs free)
 - payments → Stripe (best docs, 2.9% + $0.30)
 - vector-database → Qdrant (open source, cheapest at scale)
 - caching → Upstash Redis (HTTP-based, serverless-native)

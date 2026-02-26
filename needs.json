@@ -1,6 +1,6 @@
 {
   "schema_version": "0.2.0",
-  "last_updated": "2026-02-25",
+  "last_updated": "2026-02-26",
   "what_is_this": "A curated registry of best-in-class tools for common development tasks. Optimized for AI agents to read and act on. Each entry includes install commands, environment variables, and ready-to-run code.",
   "how_to_use": "Find the task you need by id or keywords. Use the 'best' recommendation. Each entry has working code you can execute directly. All pricing data is verified from official sources.",
   "tasks": [
@@ -24,7 +24,7 @@
         "pricing": "$0.04/hr (v3-turbo), $0.02/hr (distil-whisper, English only), $0.111/hr (v3 full). Batch API: 50% off.",
         "free_tier": "28,800 audio-seconds/day (~8 hrs). No credit card required.",
         "docs": "https://console.groq.com/docs/speech-text",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -69,7 +69,7 @@
         "pricing": "Free: 3,000 emails/month, 100/day, 1 domain. Pro: $20/mo (50K emails). Scale: $90/mo (100K emails). Overage: $0.90/1K emails.",
         "free_tier": "3,000 emails/month, 100/day. 1 domain. 1-day data retention.",
         "docs": "https://resend.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -101,7 +101,7 @@
         },
         "pricing": "Included in Resend plans",
         "docs": "https://resend.com/docs/dashboard/webhooks/introduction",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -130,7 +130,7 @@
         "pricing": "Free: 500MB database, 1GB storage, 5GB bandwidth, 50K auth MAUs, 2 projects (pauses after 7 days idle). Pro: $25/mo (8GB DB, 100GB storage, 250GB bandwidth). Overage: $0.125/GB storage, $0.09/GB bandwidth.",
         "free_tier": "500MB database, 2 active projects. Projects pause after 1 week of inactivity.",
         "docs": "https://supabase.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -162,10 +162,10 @@
           "python": "import boto3\nimport os\n\ns3 = boto3.client('s3',\n    endpoint_url=f'https://{os.environ[\"R2_ACCOUNT_ID\"]}.r2.cloudflarestorage.com',\n    aws_access_key_id=os.environ['R2_ACCESS_KEY_ID'],\n    aws_secret_access_key=os.environ['R2_SECRET_ACCESS_KEY']\n)\n\n# Upload\ns3.upload_file('local_file.png', 'my-bucket', 'uploads/file.png')\n\n# Generate download URL\nurl = s3.generate_presigned_url('get_object',\n    Params={'Bucket': 'my-bucket', 'Key': 'uploads/file.png'},\n    ExpiresIn=3600\n)\nprint(url)",
           "node": "import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';\nimport { getSignedUrl } from '@aws-sdk/s3-request-presigner';\nimport { readFileSync } from 'fs';\n\nconst s3 = new S3Client({\n  region: 'auto',\n  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,\n  credentials: {\n    accessKeyId: process.env.R2_ACCESS_KEY_ID,\n    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY\n  }\n});\n\n// Upload\nawait s3.send(new PutObjectCommand({\n  Bucket: 'my-bucket',\n  Key: 'uploads/file.png',\n  Body: readFileSync('local_file.png')\n}));\n\n// Generate download URL\nconst url = await getSignedUrl(s3, new GetObjectCommand({\n  Bucket: 'my-bucket', Key: 'uploads/file.png'\n}), { expiresIn: 3600 });\nconsole.log(url);"
         },
-        "pricing": "Storage: $0.015/GB-month. Class A ops (writes): $4.50/million. Class B ops (reads): $0.36/million. Egress: $0 (always free).",
+        "pricing": "Storage: $0.015/GB-month (Infrequent Access: $0.01/GB-month, beta). Class A ops (writes): $4.50/million. Class B ops (reads): $0.36/million. Egress: $0 (always free).",
         "free_tier": "10GB storage, 1M Class A ops/mo, 10M Class B ops/mo. Zero egress fees.",
         "docs": "https://developers.cloudflare.com/r2/",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -198,10 +198,10 @@
           "node": "import FirecrawlApp from '@mendable/firecrawl-js';\n\nconst app = new FirecrawlApp({ apiKey: 'fc-xxxxx' });\n\nconst result = await app.scrapeUrl('https://example.com', {\n  formats: ['markdown']\n});\n\nconsole.log(result.markdown);",
           "curl": "curl -X POST 'https://api.firecrawl.dev/v1/scrape' \\\n  -H 'Authorization: Bearer fc-xxxxx' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"url\": \"https://example.com\", \"formats\": [\"markdown\"]}'"
         },
-        "pricing": "Free: 500 pages (one-time). Hobby: $9/mo (3K pages). Standard: $83/mo (100K pages). Credits don't roll over.",
-        "free_tier": "500 pages one-time. 2 concurrent requests.",
+        "pricing": "Free: 500 credits (one-time). Hobby: $16/mo billed yearly (3K credits). Standard: $83/mo (100K credits). Growth: $333/mo (500K credits). 1 credit = 1 page scrape.",
+        "free_tier": "500 credits one-time. 2 concurrent requests.",
         "docs": "https://docs.firecrawl.dev/",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -223,7 +223,7 @@
       "keywords": ["auth", "login", "signup", "oauth", "sso", "user", "session", "jwt", "password", "mfa"],
       "best": {
         "tool": "Clerk",
-        "why": "Best AI agent integration: has dedicated @clerk/agent-toolkit for Vercel AI SDK, LangChain, and MCP. Curated AI prompts for Cursor/Copilot/Claude. 10K MAUs free. Drop-in UI components.",
+        "why": "Best AI agent integration: has dedicated @clerk/agent-toolkit for Vercel AI SDK, LangChain, and MCP. Curated AI prompts for Cursor/Copilot/Claude. 50K MRUs free (increased from 10K in Feb 2026). Drop-in UI components.",
         "setup": {
           "install": "npm install @clerk/nextjs",
           "env": ["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "CLERK_SECRET_KEY"],
@@ -232,10 +232,10 @@
         "code": {
           "node_nextjs": "// app/layout.tsx\nimport { ClerkProvider, SignInButton, UserButton } from '@clerk/nextjs';\n\nexport default function RootLayout({ children }) {\n  return (\n    <ClerkProvider>\n      <html>\n        <body>\n          <SignInButton />\n          <UserButton />\n          {children}\n        </body>\n      </html>\n    </ClerkProvider>\n  );\n}\n\n// middleware.ts\nimport { clerkMiddleware } from '@clerk/nextjs/server';\nexport default clerkMiddleware();\nexport const config = { matcher: ['/((?!.*\\\\..*|_next).*)', '/', '/(api|trpc)(.*)'] };"
         },
-        "pricing": "Free: 10,000 MAUs (production-ready). Pro: $25/mo + $0.02/MAU beyond 10K. Enterprise: custom.",
-        "free_tier": "10,000 MAUs. Includes social login, email/password, MFA. No credit card required.",
+        "pricing": "Free: 50,000 MRUs (Monthly Returning Users). Pro: $25/mo (or $20/mo annual) + $0.02/MRU for 50K-100K, tiered down to $0.012 at 10M+. Business: $250-300/mo (SOC2/HIPAA). Enterprise: custom.",
+        "free_tier": "50,000 MRUs (production-ready). Includes social login, email/password. MFA is Pro-tier. No credit card required.",
         "docs": "https://clerk.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -272,7 +272,7 @@
         "pricing": "2.9% + $0.30 per transaction (US cards). No monthly fees. International cards: +1.5%. Stripe Tax, Billing, Radar are additional.",
         "free_tier": "No monthly fee. Pay per transaction only. Test mode is free.",
         "docs": "https://stripe.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -306,10 +306,10 @@
           "python": "from qdrant_client import QdrantClient\nfrom qdrant_client.models import Distance, VectorParams, PointStruct\n\nclient = QdrantClient(url=\"https://xxx.cloud.qdrant.io\", api_key=\"your-key\")\n\n# Create collection\nclient.create_collection(\n    collection_name=\"my_docs\",\n    vectors_config=VectorParams(size=1536, distance=Distance.COSINE)\n)\n\n# Insert vectors\nclient.upsert(collection_name=\"my_docs\", points=[\n    PointStruct(id=1, vector=[0.1]*1536, payload={\"text\": \"Hello world\"}),\n    PointStruct(id=2, vector=[0.2]*1536, payload={\"text\": \"Goodbye world\"}),\n])\n\n# Search\nresults = client.query_points(\n    collection_name=\"my_docs\",\n    query=[0.1]*1536,\n    limit=5\n)\nprint(results)",
           "docker_self_host": "docker run -p 6333:6333 qdrant/qdrant"
         },
-        "pricing": "Self-hosted: free. Cloud: 1GB free (permanent). Paid: usage-based, ~$102/mo for standard AWS config.",
+        "pricing": "Self-hosted: free. Cloud: 1GB free (permanent). Paid: usage-based from ~$25/mo (Managed Cloud) or $0.014/hr (Hybrid Cloud). Available on AWS, GCP, Azure.",
         "free_tier": "1GB free cloud tier (no expiry). Self-hosting is completely free.",
         "docs": "https://qdrant.tech/documentation/",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -342,10 +342,10 @@
           "node": "import { Redis } from '@upstash/redis';\n\nconst redis = new Redis({\n  url: process.env.UPSTASH_REDIS_REST_URL,\n  token: process.env.UPSTASH_REDIS_REST_TOKEN,\n});\n\n// Set\nawait redis.set('user:1', JSON.stringify({ name: 'Alice' }));\n\n// Get\nconst user = await redis.get('user:1');\nconsole.log(user);\n\n// Set with expiry (60 seconds)\nawait redis.set('session:abc', 'data', { ex: 60 });",
           "python": "from upstash_redis import Redis\nimport os\n\nredis = Redis(\n    url=os.environ['UPSTASH_REDIS_REST_URL'],\n    token=os.environ['UPSTASH_REDIS_REST_TOKEN']\n)\n\nredis.set('user:1', 'Alice')\nprint(redis.get('user:1'))"
         },
-        "pricing": "Free: 256MB storage, 500K commands/mo, 10 databases. Pay-as-you-go: from $10/mo. Bandwidth: 200GB free, then $0.03/GB.",
+        "pricing": "Free: 256MB storage, 500K commands/mo, 10 databases. Pay-as-you-go: $0.2/100K commands (no monthly minimum). Fixed plans: from $10/mo. Bandwidth: 200GB free, then $0.03/GB.",
         "free_tier": "256MB storage, 500K commands/month, up to 10 databases. Permanent.",
         "docs": "https://upstash.com/docs/redis/overall/getstarted",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -379,9 +379,9 @@
           "python": "import meilisearch\n\nclient = meilisearch.Client('http://localhost:7700', 'masterKey')\n\nclient.index('movies').add_documents([\n    {'id': 1, 'title': 'Inception', 'genre': 'Sci-Fi'},\n    {'id': 2, 'title': 'Interstellar', 'genre': 'Sci-Fi'},\n])\n\nresults = client.index('movies').search('incption')\nprint(results['hits'])"
         },
         "pricing": "Self-hosted: free (MIT). Cloud: from ~$30/mo (~$59/mo for 250K records + 1M searches).",
-        "free_tier": "Self-hosted: completely free. Cloud: contact for trial.",
+        "free_tier": "Self-hosted: completely free. Cloud: 14-day free trial.",
         "docs": "https://www.meilisearch.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -413,10 +413,10 @@
           "node": "import twilio from 'twilio';\n\nconst client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);\n\nconst message = await client.messages.create({\n  body: 'Hello from agent-need!',\n  from: process.env.TWILIO_PHONE_NUMBER,\n  to: '+1234567890'\n});\n\nconsole.log(message.sid);",
           "python": "from twilio.rest import Client\nimport os\n\nclient = Client(os.environ['TWILIO_ACCOUNT_SID'], os.environ['TWILIO_AUTH_TOKEN'])\n\nmessage = client.messages.create(\n    body='Hello from agent-need!',\n    from_=os.environ['TWILIO_PHONE_NUMBER'],\n    to='+1234567890'\n)\n\nprint(message.sid)"
         },
-        "pricing": "US SMS: ~$0.0079/msg outbound + carrier fees (~$0.0083 total). Phone number: $1.15/mo (local). MMS: $0.022/msg.",
+        "pricing": "US SMS: $0.0083/msg outbound + carrier surcharges. Phone number: $1.15/mo (local). MMS: $0.022/msg.",
         "free_tier": "$15.50 trial credit. Limited to verified numbers. Messages prefixed with 'Sent from a Twilio Trial account'.",
         "docs": "https://www.twilio.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -442,10 +442,10 @@
         "code": {
           "node": "import { Inngest } from 'inngest';\n\nconst inngest = new Inngest({ id: 'my-app' });\n\n// Define a function\nexport const processOrder = inngest.createFunction(\n  { id: 'process-order' },\n  { event: 'order/created' },\n  async ({ event, step }) => {\n    // Step 1: Charge payment\n    const charge = await step.run('charge-payment', async () => {\n      return await chargeCustomer(event.data.customerId, event.data.amount);\n    });\n\n    // Step 2: Wait 1 hour, then send confirmation\n    await step.sleep('wait-before-email', '1h');\n\n    // Step 3: Send email\n    await step.run('send-confirmation', async () => {\n      return await sendEmail(event.data.email, charge.id);\n    });\n  }\n);\n\n// Trigger it\nawait inngest.send({ name: 'order/created', data: { customerId: '123', amount: 2000, email: 'user@example.com' } });"
         },
-        "pricing": "Free: 50K executions/mo, 1-5M events/day. Paid: usage-based beyond free tier.",
+        "pricing": "Free: 50K executions/mo. Pro: $75/mo (1M executions included, then $50/additional 1M). Enterprise: custom.",
         "free_tier": "50K executions/month. 256KB payload. Sleep up to 7 days.",
         "docs": "https://www.inngest.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -477,10 +477,10 @@
         "code": {
           "node": "import Ably from 'ably';\n\n// Server: publish\nconst ably = new Ably.Rest(process.env.ABLY_API_KEY);\nconst channel = ably.channels.get('my-channel');\nawait channel.publish('greeting', { text: 'Hello from server!' });\n\n// Client: subscribe (browser)\nconst realtime = new Ably.Realtime('your-api-key');\nconst ch = realtime.channels.get('my-channel');\nch.subscribe('greeting', (message) => {\n  console.log('Received:', message.data);\n});"
         },
-        "pricing": "Free: 6M messages/mo, no credit card. Standard: $49.99/mo. Overage: $2.50/1M messages.",
+        "pricing": "Free: 6M messages/mo, no credit card. Standard: $29/mo + $2.50/1M messages + $1.00/1M connection-minutes. Pro: $399/mo.",
         "free_tier": "6M messages/month. No time limit. No credit card required.",
         "docs": "https://ably.com/docs",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -513,7 +513,7 @@
         "pricing": "Free and open source (Apache 2.0).",
         "free_tier": "Completely free.",
         "docs": "https://pptr.dev/",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -556,7 +556,7 @@
         "pricing": "Free: 25 credits/mo (1 credit = 1GB storage OR 1GB bandwidth OR 1K transformations). Plus: $89/mo (225 credits). Advanced: $224/mo (600 credits).",
         "free_tier": "25 credits/month. No time limit, no credit card required.",
         "docs": "https://cloudinary.com/documentation",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
@@ -589,10 +589,10 @@
           "node": "import * as Sentry from '@sentry/node';\n\nSentry.init({ dsn: process.env.SENTRY_DSN });\n\n// Errors are automatically captured\n// Manual capture:\ntry {\n  riskyOperation();\n} catch (error) {\n  Sentry.captureException(error);\n}",
           "python": "import sentry_sdk\nimport os\n\nsentry_sdk.init(dsn=os.environ['SENTRY_DSN'])\n\n# Errors are automatically captured\n# Manual capture:\ntry:\n    risky_operation()\nexcept Exception as e:\n    sentry_sdk.capture_exception(e)"
         },
-        "pricing": "Free (Developer): 5K errors/mo, 10K performance units/mo, 1 user. Team: $26/mo (50K errors). Business: $80/mo (100K errors).",
-        "free_tier": "5,000 errors/month, 10,000 performance units/month, 1 user. Forever free.",
+        "pricing": "Free (Developer): 5K errors/mo, 5M spans/mo, 50 session replays, 1 user. Team: $26/mo (50K errors, 5M spans). Business: $80/mo (100K errors).",
+        "free_tier": "5,000 errors/month, 5M spans/month, 50 session replays, 1 user. Forever free.",
         "docs": "https://docs.sentry.io/",
-        "last_verified": "2026-02-25"
+        "last_verified": "2026-02-26"
       },
       "alternatives": [
         {
