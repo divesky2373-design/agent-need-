@@ -79,7 +79,7 @@
         },
         {
           "tool": "SendGrid",
-          "why": "High-volume plans. Free: 100 emails/day. Essentials: $19.95/mo for 50K. Docs are complex and hard for agents to parse.",
+          "why": "High-volume plans. Free tier retired May 2025 — now starts at Essentials: $19.95/mo for 50K. Docs are complex and hard for agents to parse.",
           "docs": "https://docs.sendgrid.com/"
         }
       ]
@@ -135,7 +135,7 @@
       "alternatives": [
         {
           "tool": "Neon",
-          "why": "Serverless Postgres that scales to zero. Free: 0.5GB/project, 100 compute-hours/mo, 100 projects. Storage dropped to $0.35/GB-month in 2025. Great for side projects.",
+          "why": "Serverless Postgres that scales to zero. Acquired by Databricks (May 2025), still operational. Free: 0.5GB/project, 100 compute-hours/mo, 100 projects. Storage: $0.35/GB-month.",
           "docs": "https://neon.tech/docs"
         },
         {
