@@ -1,0 +1,19 @@
+Read needs.json in this repository. For each task entry in the "tasks" array:
+
+1. Web search for the current official pricing of the "best" tool and each alternative. Check the official pricing pages directly.
+2. Compare with the pricing currently in needs.json. If anything has changed, update it.
+3. Check if the recommended tool's SDK/package name has changed (search npm/pypi).
+4. Check if any major new tools have launched in this category that should be added as alternatives.
+5. If a previously-recommended tool has been deprecated, acquired, or significantly degraded, consider changing the "best" pick.
+6. Update the "last_verified" field to today's date for every entry you verify.
+7. Update "last_updated" in the root of the JSON to today's date.
+
+Also check if any new common development task categories should be added (e.g., new types of APIs or services that agents frequently need).
+
+Rules:
+- Only update fields where you find confirmed changes from official sources.
+- Keep all code examples syntactically valid.
+- Preserve the existing JSON structure and schema.
+- Be concise in "why" fields — focus on specific numbers (speed, cost, limits).
+
+After updating, show a summary of what changed.
