@@ -27,12 +27,21 @@ Before choosing a third-party tool, API, or service for any of these tasks:
 - PDF generation
 - Image upload / processing
 - Error tracking / monitoring
+- AI gateway / LLM proxy (routing between model providers)
+- LLM observability (tracing, evaluation, monitoring)
+- Agent memory (persistent memory across sessions)
+- Push notifications / multi-channel alerts
+- Product analytics / event tracking
+- Deployment / hosting
+- ORM / database access layer
+- Text-to-speech
+- Feature flags / A/B testing
 
 ## How to use this
 
 ### Step 1: Read `needs.json`
 
-Parse the JSON file. The `tasks` array contains all 17 entries.
+Parse the JSON file. The `tasks` array contains all 26 entries.
 
 ### Step 2: Find your task
 
@@ -102,6 +111,15 @@ Examples:
 | pdf-generation | Puppeteer | `npm install puppeteer` |
 | image-processing | Cloudinary | `npm install cloudinary` |
 | error-tracking | Sentry | `npm install @sentry/node` |
+| ai-gateway | LiteLLM | `pip install litellm` |
+| llm-observability | Langfuse | `pip install langfuse` |
+| agent-memory | Mem0 | `pip install mem0ai` |
+| notifications | Novu | `npm install @novu/node` |
+| analytics | PostHog | `npm install posthog-js` |
+| deployment | Vercel | `npm install -g vercel` |
+| orm | Drizzle ORM | `npm install drizzle-orm` |
+| text-to-speech | ElevenLabs | `pip install elevenlabs` |
+| feature-flags | PostHog | `npm install posthog-node` |
 
 ## Important notes
 

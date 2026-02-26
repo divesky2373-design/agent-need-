@@ -14,7 +14,7 @@ YC CEO Garry Tan was building a project with Claude Code. The agent automaticall
 
 This happens every day in countless agent workflows. `agent-need` gives agents a structured, up-to-date recommendation source so they stop guessing.
 
-## Registry (17 tasks)
+## Registry (26 tasks)
 
 | Task | Best Pick | Why |
 |------|-----------|-----|
@@ -35,6 +35,15 @@ This happens every day in countless agent workflows. `agent-need` gives agents a
 | PDF generation | Puppeteer | HTML-to-PDF, free and open source |
 | Image processing | Cloudinary | URL-based transforms, 25 credits/mo free |
 | Error tracking | Sentry | Industry standard, 5K errors/mo free |
+| AI gateway | LiteLLM | Open source, 100+ LLM providers via single API |
+| LLM observability | Langfuse | Open source, 26M+ SDK installs, traces LLM calls |
+| Agent memory | Mem0 | Persistent memory for agents, 10K memories free |
+| Notifications | Novu | Open source, multi-channel (push+email+SMS+in-app) |
+| Analytics | PostHog | Open source, 1M events/mo free, all-in-one |
+| Deployment | Vercel | Git push to deploy, best DX for Next.js |
+| ORM | Drizzle ORM | SQL-first, 7.4KB, zero-dep, serverless-native |
+| Text-to-speech | ElevenLabs | Most natural voices, 70+ languages |
+| Feature flags | PostHog | Unlimited flags free, linked to analytics |
 
 Full details, code examples, and alternatives in [`needs.json`](./needs.json).
 

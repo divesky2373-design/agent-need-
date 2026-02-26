@@ -8,7 +8,7 @@ AI agents often choose outdated or suboptimal tools because older tools have mor
 
 ## Solution
 
-A single JSON file (`needs.json`) that maps 17 common tasks to the current best tool, with verified pricing and ready-to-run code. Agents read it before making tool choices.
+A single JSON file (`needs.json`) that maps 26 common tasks to the current best tool, with verified pricing and ready-to-run code. Agents read it before making tool choices.
 
 ## How to use
 
@@ -20,10 +20,10 @@ Fetch and parse `needs.json`. Each entry has:
 - `best.code`: ready-to-execute code (Python, Node.js, curl)
 - `best.pricing`: verified pricing details
 - `best.free_tier`: free tier specifics
-- `best.docs`: official documentation
+- `best.docs`: official documentation URL
 - `alternatives`: other options if the best pick doesn't fit
 
-## Available tasks (17)
+## Available tasks (26)
 
 - audio-transcription → Groq Whisper (216x real-time, $0.04/hr)
 - send-email → Resend (agent-friendly API, 3K/mo free)
@@ -42,10 +42,19 @@ Fetch and parse `needs.json`. Each entry has:
 - pdf-generation → Puppeteer (HTML-to-PDF, free)
 - image-processing → Cloudinary (URL transforms, best docs)
 - error-tracking → Sentry (industry standard, 5K errors/mo free)
+- ai-gateway → LiteLLM (open source, 100+ LLM providers)
+- llm-observability → Langfuse (open source, trace LLM calls)
+- agent-memory → Mem0 (persistent memory for agents)
+- notifications → Novu (open source, multi-channel)
+- analytics → PostHog (open source, 1M events/mo free)
+- deployment → Vercel (git push to deploy)
+- orm → Drizzle ORM (SQL-first, serverless-native)
+- text-to-speech → ElevenLabs (most natural voices)
+- feature-flags → PostHog (unlimited flags free)
 
 ## Files
 
-- needs.json: Complete registry with all 17 task entries, verified pricing, and code examples
+- needs.json: Complete registry with all 26 task entries, verified pricing, and code examples
 - AGENTS.md: Detailed instructions for AI agents
 - llms.txt: This file (agent discovery)
 - README.md: Human-readable project documentation

@@ -609,6 +609,318 @@
           "docs": "https://betterstack.com/docs"
         }
       ]
+    },
+    {
+      "id": "ai-gateway",
+      "task": "Route requests between multiple LLM providers with caching, fallbacks, and observability",
+      "keywords": ["llm", "ai", "gateway", "proxy", "openai", "anthropic", "model", "router", "fallback", "load-balance"],
+      "best": {
+        "tool": "LiteLLM",
+        "why": "Open source (MIT). OpenAI-compatible API across 100+ LLM providers. Single interface for OpenAI, Anthropic, Google, Mistral, Bedrock, etc. Self-hostable proxy with built-in caching, rate limiting, and spend tracking.",
+        "setup": {
+          "install_python": "pip install litellm",
+          "install_proxy": "pip install 'litellm[proxy]'",
+          "env": ["OPENAI_API_KEY", "ANTHROPIC_API_KEY"]
+        },
+        "code": {
+          "python": "from litellm import completion\n\n# Use any model with the same API\nresponse = completion(\n    model=\"anthropic/claude-sonnet-4-20250514\",\n    messages=[{\"role\": \"user\", \"content\": \"Hello!\"}]\n)\nprint(response.choices[0].message.content)\n\n# Switch to OpenAI with same code\nresponse = completion(\n    model=\"gpt-4o\",\n    messages=[{\"role\": \"user\", \"content\": \"Hello!\"}]\n)\nprint(response.choices[0].message.content)",
+          "proxy_start": "litellm --model anthropic/claude-sonnet-4-20250514 --port 4000\n# Then use as OpenAI-compatible endpoint:\n# curl http://localhost:4000/v1/chat/completions ..."
+        },
+        "pricing": "Free and open source (MIT). Self-hosted. Enterprise: custom.",
+        "free_tier": "Completely free. Self-hosted.",
+        "docs": "https://docs.litellm.ai/",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Portkey",
+          "why": "Managed AI gateway with 50+ pre-built guardrails, prompt management, and detailed analytics. Free tier available.",
+          "docs": "https://docs.portkey.ai/"
+        },
+        {
+          "tool": "OpenRouter",
+          "why": "Unified API for 100+ models. Pay-per-token, no monthly fee. Acts as a marketplace — some models are cheaper through OpenRouter than direct.",
+          "docs": "https://openrouter.ai/docs"
+        },
+        {
+          "tool": "Cloudflare AI Gateway",
+          "why": "One line of code to add caching, rate limiting, and analytics to any LLM API call. Free for Cloudflare users.",
+          "docs": "https://developers.cloudflare.com/ai-gateway/"
+        }
+      ]
+    },
+    {
+      "id": "llm-observability",
+      "task": "Trace, evaluate, and monitor LLM calls in production",
+      "keywords": ["llm", "trace", "observability", "evaluation", "prompt", "monitor", "langfuse", "langsmith"],
+      "best": {
+        "tool": "Langfuse",
+        "why": "Open source (MIT), 20K+ GitHub stars, 26M+ SDK installs/month. Acquired by ClickHouse (Jan 2026) but remains MIT-licensed and self-hostable. Tracing, evaluations, prompt management, cost tracking. Framework-agnostic.",
+        "setup": {
+          "install_python": "pip install langfuse",
+          "install_node": "npm install langfuse",
+          "env": ["LANGFUSE_PUBLIC_KEY", "LANGFUSE_SECRET_KEY", "LANGFUSE_HOST"],
+          "get_api_key": "https://cloud.langfuse.com → Create project → Settings → API Keys"
+        },
+        "code": {
+          "python": "from langfuse.openai import openai\n\n# Drop-in replacement for OpenAI — automatically traces all calls\nclient = openai.OpenAI()\n\nresponse = client.chat.completions.create(\n    model=\"gpt-4o\",\n    messages=[{\"role\": \"user\", \"content\": \"Hello!\"}],\n    metadata={\"user_id\": \"user-123\"}  # optional metadata\n)\n\nprint(response.choices[0].message.content)\n# Traces automatically appear in Langfuse dashboard",
+          "python_decorator": "from langfuse.decorators import observe\n\n@observe()\ndef my_agent(query: str):\n    # All LLM calls inside this function are automatically traced\n    result = call_llm(query)\n    return result"
+        },
+        "pricing": "Self-hosted: free (MIT). Cloud: free tier (50K observations/mo). Pro: $59/mo. Team: $119/mo.",
+        "free_tier": "Self-hosted: completely free. Cloud: 50K observations/month.",
+        "docs": "https://langfuse.com/docs",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Braintrust",
+          "why": "Used by Notion, Zapier, Stripe. Strong evaluation and prompt playground features. Logging is free.",
+          "docs": "https://www.braintrust.dev/docs"
+        },
+        {
+          "tool": "LangSmith",
+          "why": "Best for LangChain/LangGraph users. Tight integration with LangChain ecosystem. Free: 5K traces/mo.",
+          "docs": "https://docs.smith.langchain.com/"
+        }
+      ]
+    },
+    {
+      "id": "agent-memory",
+      "task": "Add persistent memory to AI agents across sessions",
+      "keywords": ["memory", "agent", "remember", "context", "personalization", "long-term", "conversation"],
+      "best": {
+        "tool": "Mem0",
+        "why": "Developer-first memory layer for AI agents. Vendor-agnostic — works with OpenAI, Anthropic, LangGraph, CrewAI, Vercel AI SDK. YC-backed, 50K+ developers. Stores and retrieves relevant memories automatically.",
+        "setup": {
+          "install_python": "pip install mem0ai",
+          "install_node": "npm install mem0ai",
+          "env": ["MEM0_API_KEY"],
+          "get_api_key": "https://app.mem0.ai → API Keys"
+        },
+        "code": {
+          "python": "from mem0 import Memory\n\nm = Memory()\n\n# Add memories\nm.add(\"I prefer dark mode and Python over JavaScript\", user_id=\"alice\")\nm.add(\"My project uses Next.js with Supabase\", user_id=\"alice\")\n\n# Search relevant memories\nresults = m.search(\"What tech stack does the user prefer?\", user_id=\"alice\")\nfor r in results:\n    print(r['memory'])"
+        },
+        "pricing": "Free: 10K memories, 1K retrieval calls/mo. Paid: usage-based beyond free tier.",
+        "free_tier": "10,000 memories, 1,000 retrieval calls/month.",
+        "docs": "https://docs.mem0.ai/",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Zep",
+          "why": "Temporal knowledge graph — tracks how facts change over time. Stronger for complex entity relationships and contradiction detection.",
+          "docs": "https://docs.getzep.com/"
+        },
+        {
+          "tool": "Letta",
+          "why": "Agent runtime with self-editing memory. Agents can autonomously decide what to remember and forget.",
+          "docs": "https://docs.letta.com/"
+        }
+      ]
+    },
+    {
+      "id": "notifications",
+      "task": "Send push notifications and multi-channel alerts (push, in-app, email, SMS)",
+      "keywords": ["notification", "push", "alert", "in-app", "mobile", "web-push", "multichannel"],
+      "best": {
+        "tool": "Novu",
+        "why": "Open source notification infrastructure. Unified API for push, email, SMS, in-app, and chat. Integrates with existing providers (Twilio, Resend, FCM). Visual workflow editor for notification logic.",
+        "setup": {
+          "install": "npm install @novu/node",
+          "env": ["NOVU_API_KEY"],
+          "get_api_key": "https://dashboard.novu.co → Settings → API Keys"
+        },
+        "code": {
+          "node": "import { Novu } from '@novu/node';\n\nconst novu = new Novu(process.env.NOVU_API_KEY);\n\n// Trigger a notification\nawait novu.trigger('order-confirmation', {\n  to: {\n    subscriberId: 'user-123',\n    email: 'user@example.com',\n    phone: '+1234567890'\n  },\n  payload: {\n    orderId: 'ORD-001',\n    amount: '$20.00'\n  }\n});\n// Sends via all configured channels (email + push + in-app)"
+        },
+        "pricing": "Free: 10K workflow runs/mo. Pro: from $30/mo ($1.20/1K extra runs). Team: from $250/mo. Self-hosted: free (open source).",
+        "free_tier": "10,000 workflow runs/month. All channels. 20 workflows. No credit card required.",
+        "docs": "https://docs.novu.co/",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "OneSignal",
+          "why": "Best for mobile push. Free: unlimited mobile push sends, 10K web push subscribers. Used by Uber, Adobe. SDKs for iOS, Android, web, React Native.",
+          "docs": "https://documentation.onesignal.com/"
+        },
+        {
+          "tool": "Knock",
+          "why": "Notification orchestration with advanced workflows (delays, batching, throttling). Free: 10K messages/mo.",
+          "docs": "https://docs.knock.app/"
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "task": "Add product analytics, event tracking, and user behavior insights to your application",
+      "keywords": ["analytics", "tracking", "events", "funnel", "retention", "user", "behavior", "mixpanel"],
+      "best": {
+        "tool": "PostHog",
+        "why": "Open source, all-in-one: product analytics, web analytics, session replay, feature flags, experiments, surveys, LLM analytics. Self-hostable. Most generous free tier in the category.",
+        "setup": {
+          "install_node": "npm install posthog-js posthog-node",
+          "install_python": "pip install posthog",
+          "env": ["POSTHOG_API_KEY", "POSTHOG_HOST"],
+          "get_api_key": "https://app.posthog.com → Project Settings → API Key"
+        },
+        "code": {
+          "node_browser": "import posthog from 'posthog-js';\n\nposthog.init(process.env.POSTHOG_API_KEY, {\n  api_host: 'https://us.i.posthog.com'\n});\n\n// Track events\nposthog.capture('purchase_completed', {\n  product: 'Widget',\n  amount: 20.00\n});\n\n// Identify users\nposthog.identify('user-123', {\n  email: 'alice@example.com',\n  plan: 'pro'\n});",
+          "python": "from posthog import Posthog\n\nposthog = Posthog(project_api_key='phc_xxx', host='https://us.i.posthog.com')\n\nposthog.capture('user-123', 'purchase_completed', {\n    'product': 'Widget',\n    'amount': 20.00\n})"
+        },
+        "pricing": "Free: 1M events/mo, 5K session replays, unlimited feature flags. Paid: usage-based ($0.00031/event beyond 1M).",
+        "free_tier": "1M events/month, 5K session replays, unlimited feature flags and experiments. No credit card required.",
+        "docs": "https://posthog.com/docs",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Plausible",
+          "why": "Privacy-focused, cookie-free web analytics. Lightweight (<1KB script). EU-hosted. From $9/mo. Open source (AGPL).",
+          "docs": "https://plausible.io/docs"
+        },
+        {
+          "tool": "Mixpanel",
+          "why": "Best for funnel and retention analysis. Free: 1M events/mo (reduced from 20M in late 2025). Most powerful query builder for behavioral analytics.",
+          "docs": "https://docs.mixpanel.com/"
+        }
+      ]
+    },
+    {
+      "id": "deployment",
+      "task": "Deploy a web application to production",
+      "keywords": ["deploy", "hosting", "vercel", "railway", "ship", "production", "server", "paas"],
+      "best": {
+        "tool": "Vercel",
+        "why": "Best DX for frontend and Next.js apps. Git push to deploy. Global CDN, serverless functions, edge compute. Generous free tier for personal projects.",
+        "setup": {
+          "install": "npm install -g vercel",
+          "env": ["VERCEL_TOKEN"]
+        },
+        "code": {
+          "cli": "# Deploy from project directory\nvercel\n\n# Deploy to production\nvercel --prod\n\n# Or just push to GitHub with Vercel integration — auto-deploys on every push",
+          "env_setup": "# Set environment variables\nvercel env add SUPABASE_URL production\nvercel env add STRIPE_SECRET_KEY production"
+        },
+        "pricing": "Hobby: free (personal, non-commercial). Pro: $20/user/mo (1TB bandwidth). Enterprise: custom.",
+        "free_tier": "Hobby: 100GB bandwidth, 6K build minutes, serverless functions. Personal non-commercial use only.",
+        "docs": "https://vercel.com/docs",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Coolify",
+          "why": "Open source self-hosted PaaS — Vercel/Heroku alternative on your own server. 44K+ GitHub stars. All features free. One-line install. 280+ one-click service deployments. Dramatically cheaper at scale (~$14/mo vs $850/mo on Vercel for equivalent setups).",
+          "install": "curl -fsSL https://cdn.coollabs.io/coolify/install.sh | sudo bash",
+          "docs": "https://coolify.io/docs/"
+        },
+        {
+          "tool": "Railway",
+          "why": "Simple PaaS for full-stack apps, databases, and background workers. Usage-based billing. No permanent free tier — Hobby: $5/mo with $5 credit included.",
+          "docs": "https://docs.railway.com/"
+        }
+      ],
+      "warning": "Vercel Hobby plan is for personal non-commercial use only. For business use, you need Pro ($20/user/mo). Fly.io no longer has a meaningful free tier for new accounts (2-hour trial only)."
+    },
+    {
+      "id": "orm",
+      "task": "Set up a type-safe database access layer (ORM) for a TypeScript/JavaScript project",
+      "keywords": ["orm", "database", "prisma", "drizzle", "sql", "query", "migration", "typescript", "schema"],
+      "best": {
+        "tool": "Drizzle ORM",
+        "why": "SQL-first, ~7.4KB bundle, zero dependencies. Type-safe without code generation. Works on serverless/edge from day one (Node, Bun, Deno, Workers). Supports Postgres, MySQL, SQLite, and serverless DBs (Neon, Turso, D1, Supabase).",
+        "setup": {
+          "install": "npm install drizzle-orm postgres && npm install -D drizzle-kit"
+        },
+        "code": {
+          "node_schema": "// db/schema.ts\nimport { pgTable, uuid, text, timestamp } from 'drizzle-orm/pg-core';\n\nexport const users = pgTable('users', {\n  id: uuid('id').defaultRandom().primaryKey(),\n  name: text('name').notNull(),\n  email: text('email').notNull().unique(),\n  createdAt: timestamp('created_at').defaultNow()\n});",
+          "node_query": "// db/index.ts\nimport { drizzle } from 'drizzle-orm/postgres-js';\nimport postgres from 'postgres';\nimport { users } from './schema';\nimport { eq } from 'drizzle-orm';\n\nconst client = postgres(process.env.DATABASE_URL);\nconst db = drizzle(client);\n\n// Insert\nawait db.insert(users).values({ name: 'Alice', email: 'alice@example.com' });\n\n// Query\nconst result = await db.select().from(users).where(eq(users.name, 'Alice'));\nconsole.log(result);",
+          "migration": "# Generate migration\nnpx drizzle-kit generate\n\n# Apply migration\nnpx drizzle-kit migrate"
+        },
+        "pricing": "Free and open source (Apache 2.0).",
+        "free_tier": "Completely free.",
+        "docs": "https://orm.drizzle.team/docs/get-started",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Prisma",
+          "why": "Schema-first ORM. Prisma 7 (2026) removed Rust engine — now TypeScript/WASM, 90% smaller bundle (1.6MB vs 14MB), up to 3.4x faster. Best docs in the ORM space. Supports MongoDB. Code generation required.",
+          "install": "npm install prisma @prisma/client",
+          "docs": "https://www.prisma.io/docs"
+        }
+      ],
+      "warning": "Drizzle is best for new projects. Prisma 7 is a major improvement — if your project already uses Prisma, upgrading to v7 is worthwhile rather than migrating to Drizzle."
+    },
+    {
+      "id": "text-to-speech",
+      "task": "Convert text to natural-sounding speech audio",
+      "keywords": ["tts", "text-to-speech", "voice", "audio", "speech", "narration", "voiceover"],
+      "best": {
+        "tool": "ElevenLabs",
+        "why": "Most natural-sounding voices in the industry. 30+ languages. Voice cloning, custom voices. Streaming support for real-time applications. Python and Node SDKs.",
+        "setup": {
+          "install_python": "pip install elevenlabs",
+          "install_node": "npm install elevenlabs",
+          "env": ["ELEVENLABS_API_KEY"],
+          "get_api_key": "https://elevenlabs.io → Profile → API Key"
+        },
+        "code": {
+          "python": "from elevenlabs import ElevenLabs\n\nclient = ElevenLabs()\n\naudio = client.text_to_speech.convert(\n    text=\"Hello! Welcome to agent-need.\",\n    voice_id=\"JBFqnCBsd6RMkjVDRZzb\",  # George voice\n    model_id=\"eleven_turbo_v2_5\"\n)\n\nwith open(\"output.mp3\", \"wb\") as f:\n    for chunk in audio:\n        f.write(chunk)",
+          "node": "import { ElevenLabsClient } from 'elevenlabs';\nimport { createWriteStream } from 'fs';\n\nconst client = new ElevenLabsClient();\n\nconst audio = await client.textToSpeech.convert('JBFqnCBsd6RMkjVDRZzb', {\n  text: 'Hello! Welcome to agent-need.',\n  model_id: 'eleven_turbo_v2_5'\n});\n\nconst stream = createWriteStream('output.mp3');\naudio.pipe(stream);"
+        },
+        "pricing": "Free: 10K credits/mo (~20 min). Starter: $5/mo (~30 min). Creator: $22/mo. Pro: $99/mo. Business: ~$1,100/mo. Credit rollover up to 2 months.",
+        "free_tier": "10,000 credits/month (~20 minutes of audio). Non-commercial only. 3 custom voices. No credit card required.",
+        "docs": "https://elevenlabs.io/docs",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "OpenAI TTS",
+          "why": "Simple API, good quality. tts-1: $15/1M chars. tts-1-hd: $30/1M chars. 6 built-in voices. No voice cloning.",
+          "docs": "https://platform.openai.com/docs/guides/text-to-speech"
+        },
+        {
+          "tool": "Deepgram Aura",
+          "why": "Fastest TTS API — optimized for real-time conversational AI. $0.0135/1K chars. Best for voice agents and chatbots.",
+          "docs": "https://developers.deepgram.com/docs/tts-models"
+        }
+      ]
+    },
+    {
+      "id": "feature-flags",
+      "task": "Add feature flags, A/B testing, and safe rollouts to your application",
+      "keywords": ["feature-flag", "toggle", "rollout", "experiment", "ab-test", "canary", "release"],
+      "best": {
+        "tool": "PostHog",
+        "why": "All-in-one: feature flags + experiments + analytics in one tool. Open source. Unlimited feature flags on free tier. No separate tool needed — flags are automatically linked to analytics data.",
+        "setup": {
+          "install_node": "npm install posthog-js posthog-node",
+          "install_python": "pip install posthog",
+          "env": ["POSTHOG_API_KEY", "POSTHOG_HOST"],
+          "get_api_key": "https://app.posthog.com → Project Settings → API Key"
+        },
+        "code": {
+          "node": "import PostHog from 'posthog-node';\n\nconst posthog = new PostHog(process.env.POSTHOG_API_KEY, {\n  host: 'https://us.i.posthog.com'\n});\n\n// Check feature flag\nconst isEnabled = await posthog.isFeatureEnabled('new-checkout-flow', 'user-123');\n\nif (isEnabled) {\n  // Show new checkout\n} else {\n  // Show old checkout\n}\n\n// Get flag payload (for multivariate flags)\nconst variant = await posthog.getFeatureFlag('pricing-experiment', 'user-123');",
+          "python": "from posthog import Posthog\n\nposthog = Posthog(project_api_key='phc_xxx', host='https://us.i.posthog.com')\n\nif posthog.feature_enabled('new-checkout-flow', 'user-123'):\n    # Show new checkout\n    pass\nelse:\n    # Show old checkout\n    pass"
+        },
+        "pricing": "Feature flags: free and unlimited (all plans). Experiments: free for first 1M events/mo.",
+        "free_tier": "Unlimited feature flags. 1M events/month for experiments. No credit card required.",
+        "docs": "https://posthog.com/docs/feature-flags",
+        "last_verified": "2026-02-26"
+      },
+      "alternatives": [
+        {
+          "tool": "Statsig",
+          "why": "Used by OpenAI, Notion, Figma, Atlassian. Combines feature flags + experimentation + product analytics. Free tier available.",
+          "docs": "https://docs.statsig.com/"
+        },
+        {
+          "tool": "GrowthBook",
+          "why": "Open source (MIT), data warehouse-native. Best for teams that want feature flags connected directly to their analytics data warehouse.",
+          "install": "npm install @growthbook/growthbook",
+          "docs": "https://docs.growthbook.io/"
+        }
+      ]
     }
   ]
 }
